@@ -15,7 +15,6 @@ module.exports.run = async (bot,message,args) => {
         title: songInfo.title,
         url: songInfo.video_url
     }
-    console.log(song)
     
     if (!serverQueue) {
         //Creates array for queue
@@ -61,12 +60,11 @@ function play(guild,song) {
     //Plays song in queue, shifts it, plays again recursively
     const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
         .on ("end", () => {
+            console.log("Song ended!")
             serverQueue.song.shift();
             play(guild, serverQueue.songs[0]);
         })
-        .on ("error", error => {
-            console.log(error);
-        });
+        .on ("error", error => console.log(error));
     dispatcher.setVolumeLogarithmic(5/5);
 }
 
