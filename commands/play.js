@@ -9,7 +9,7 @@ module.exports.run = async (bot,message,args) => {
     if (!permissions.has("SPEAK")) return message.channel.send("I cannot speak; missing speak permissions");
     
     //Generates information about song
-    const serverQueue = queue.get(message.guild.id)
+    const serverQueue = queue.get(message.guild.id);
     const songInfo = await ytdl.getInfo(args[0]);
     const song = {
         title: songInfo.title,
@@ -49,14 +49,16 @@ module.exports.run = async (bot,message,args) => {
     return;
 }
 
-function play(guild,song) {
+async function play(guild,song) {
     const serverQueue = queue.get(guild.id);
+    console.log("Playing...")
     console.log(serverQueue.songs);
 
     //If no more songs, leave channel
     if (!song) {
         serverQueue.voiceChannel.leave();
-        return queue.delete(guild.id);
+        queue.delete(guild.id);
+        return;
     }
 
     //Plays song in queue, shifts it, plays again recursively
