@@ -1,6 +1,5 @@
 const ytdl = module.require("ytdl-core")
 const queue = new Map();
-const serverQueue = queue.get(message.guild.id)
 
 module.exports.run = async (bot,message,args) => {
     const voiceChannel = message.member.voiceChannel;
@@ -10,6 +9,7 @@ module.exports.run = async (bot,message,args) => {
     if (!permissions.has("SPEAK")) return message.channel.send("I cannot speak; missing speak permissions");
     
     //Generates information about song
+    const serverQueue = queue.get(message.guild.id)
     const songInfo = await ytdl.getInfo(args[0]);
     const song = {
         title: songInfo.title,
