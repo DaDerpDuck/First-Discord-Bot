@@ -64,8 +64,7 @@ module.exports.run = async (bot,message,args) => {
 
 function play(guild, song) {
     const serverQueue = queue.get(guild.id);
-    serverQueue.textChannel.send(`Playing: **${serverQueue.songs[0].title}**`)
-
+    
     //If no more songs, leave channel
     if (!song) {
         serverQueue.textChannel.send("Queue has ended!")
@@ -73,7 +72,7 @@ function play(guild, song) {
         queue.delete(guild.id);
         return;
     }
-
+    
     //Plays song in queue, shifts it, plays again recursively
     const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
         .on ("end", () => {
@@ -83,7 +82,7 @@ function play(guild, song) {
         .on ("error", error => console.log(error));
     dispatcher.setVolumeLogarithmic(serverQueue.volume/5);
 
-    
+    serverQueue.textChannel.send(`Playing: **${serverQueue.songs[0].title}**`)
 }
 
 module.exports.help = {
