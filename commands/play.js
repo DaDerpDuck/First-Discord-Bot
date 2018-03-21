@@ -30,6 +30,8 @@ module.exports.run = async (bot,message,args) => {
         queue.set(message.guild.id, queueConstruct);
 
         queueConstruct.songs.push(song);
+        console.log(`Just set up array for ${message.guild.id}`)
+        console.log(`Array looks like this: ${queueConstruct}`)
 
         try {
             var connection = await voiceChannel.join();
