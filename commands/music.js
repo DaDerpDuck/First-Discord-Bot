@@ -1,3 +1,4 @@
+const Discord = module.require("discord.js")
 const ytdl = module.require("ytdl-core")
 const queue = new Map();
 
@@ -59,6 +60,10 @@ module.exports.run = async (bot,message,args) => {
         message.channel.send("*But I never got to fin-*");
         serverQueue.connection.dispatcher.end();
         return;
+    } else {
+        const embed = new Discord.richEmbed()
+            .setTitle = "Music Help"
+            .setDescription = "play, skip, stop"
     }
 }
 
