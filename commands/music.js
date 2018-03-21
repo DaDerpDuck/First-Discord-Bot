@@ -61,7 +61,7 @@ module.exports.run = async (bot,message,args) => {
         serverQueue.connection.dispatcher.end();
         return;
     } else {
-        const embed = new Discord.richEmbed()
+        const embed = new Discord.RichEmbed()
             .setTitle = "Music Help"
             .setDescription = "play, skip, stop"
     }
