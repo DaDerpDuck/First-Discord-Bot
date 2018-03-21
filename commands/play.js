@@ -9,6 +9,7 @@ module.exports.run = async (bot,message,args) => {
     if (!permissions.has("CONNECT")) return message.channel.send("I cannot connect; missing connect permissions");
     if (!permissions.has("SPEAK")) return message.channel.send("I cannot speak; missing speak permissions");
     
+    //Generates information about song
     const songInfo = await ytdl.getInfo(args[1]);
     const song = {
         title: songInfo.title,
@@ -48,7 +49,8 @@ module.exports.run = async (bot,message,args) => {
 
 function play(guild,song) {
     const serverQueue = queue.get(guild.id);
-    
+    console.log(serverQueue.songs);
+
     //If no more songs, leave channel
     if (!song) {
         serverQueue.voiceChannel.leave();
