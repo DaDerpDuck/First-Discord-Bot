@@ -13,8 +13,10 @@ module.exports.run = async (bot,message,args) => {
     const songInfo = await ytdl.getInfo(args[0]);
     const song = {
         title: songInfo.title,
-        url: songInfo.video_url
+        url: songInfo.url
     }
+    console.log(songInfo.url)
+    console.log(songInfo.video_url)
     
     if (!serverQueue) {
         //Creates array for queue
