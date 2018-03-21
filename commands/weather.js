@@ -21,7 +21,9 @@ module.exports.run = async (bot,message,args) => {
             .addField("Temperature", `${current.temperature} degrees`, true)
             .addField("Feels Like", `${current.feelslike} degrees`, true)
             .addField("Winds", current.winddisplay, true)
-            .addField("Humidity", `${current.humidity}%`, true);
+            .addField("Humidity", `${current.humidity}%`, true)
+            .addField("Time", current.observationtime, true)
+            .addField("Date", `${current.day}, ${current.date}`, true);
 
         message.channel.send({embed: embed});
     });
