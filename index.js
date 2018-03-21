@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const aws = require('aws-sdk');
 const botSettings = require("./botsettings.json");
 const fs = require("fs");
 const bot = new Discord.Client({disableEveryone: true});
