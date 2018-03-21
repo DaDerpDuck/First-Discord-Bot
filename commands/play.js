@@ -10,7 +10,7 @@ module.exports.run = async (bot,message,args) => {
     if (!permissions.has("SPEAK")) return message.channel.send("I cannot speak; missing speak permissions");
     
     //Generates information about song
-    const songInfo = await ytdl.getInfo(args[1]);
+    const songInfo = await ytdl.getInfo(args[0]);
     const song = {
         title: songInfo.title,
         url: songInfo.video_url
