@@ -50,7 +50,7 @@ module.exports.run = async (bot,message,args) => {
         if (!message.member.voiceChannel) return message.channel.send("You're not in a voice channel!");
         if (!serverQueue) return message.channel.send("Nothing is playing...");
         message.channel.send("*Alright, I'll just wait until you say go...*");
-        serverQueue.songs = [];
+        queue.delete(message.guild.id);
         serverQueue.connection.dispatcher.end();
         return;
     } else if (args[0] === "skip") { //Skip command
@@ -67,7 +67,7 @@ function play(guild, song) {
     serverQueue.textChannel.send(`Playing: **${serverQueue.songs[0].title}**`)
 
     //If no more songs, leave channel
-    if (!serverQueue.songs[0]) {
+    if (!song) {
         serverQueue.textChannel.send("Queue has ended!")
         serverQueue.voiceChannel.leave();
         queue.delete(guild.id);
