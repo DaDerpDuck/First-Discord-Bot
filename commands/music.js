@@ -67,8 +67,9 @@ module.exports.run = async (bot,message,args) => {
     } else if (args[0] === "volume") {
         if (!serverQueue) return message.channel.send("Nothing is playing...");
         if (!args[1]) return message.channel.send(`Volume is at **${serverQueue.volume}**`);
+        if (!Number(args[1])) return message.channel.send("Please enter a valid number");
         serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1]/5);
-        return;
+        return message.channel.send(`Set the volume to **${args[1]}**`);
     //Info
     } else if (args[0] === "info") {
         if (!serverQueue) return message.channel.send("Nothing is playing...");
@@ -77,7 +78,7 @@ module.exports.run = async (bot,message,args) => {
     } else {
         const embed = new Discord.RichEmbed()
             .setAuthor = "Music Help"
-            .setDescription = "play, skip, stop, info"
+            .setDescription = "play, skip, stop, volume, info"
             .setColor = "9B59B6";
         message.channel.send({embed: embed});
         return;
