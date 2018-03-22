@@ -6,10 +6,7 @@ const queue = new Map();
 const youtube = new YouTube(process.env.googleapikey)
 
 module.exports.run = async (bot,message,args) => {
-    const url = args[1].replace(/<.+>/g, "$1");
-    console.log(url)
-    console.log(process.env.googleapikey)
-    console.log(youtube)
+    const url = args[1].replace(/<(.+)>/g, "$1");
     const serverQueue = queue.get(message.guild.id);
     //Play
     if (args[0] === "play") {
