@@ -72,7 +72,7 @@ module.exports.run = async (bot,message,args) => {
         const embed = new Discord.RichEmbed()
             .setTitle = "Music Help"
             .setDescription = "play, skip, stop, info";
-        message.send({embed: embed});
+        message.channel.send({embed: embed});
         return;
     }
 }
