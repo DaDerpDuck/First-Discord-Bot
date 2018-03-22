@@ -4,6 +4,7 @@ const cmdlist = [
     "userinfo",
     "ping",
     "say",
+    "music",
     "weather",
     "coinflip",
     "dieroll",

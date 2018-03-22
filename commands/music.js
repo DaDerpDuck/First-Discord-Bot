@@ -4,7 +4,8 @@ const queue = new Map();
 
 module.exports.run = async (bot,message,args) => {
     const serverQueue = queue.get(message.guild.id);
-    if (args[0] === "play") { //Play command
+    //Play
+    if (args[0] === "play") {
         //Checks permissions
         const voiceChannel = message.member.voiceChannel;
         if (!voiceChannel) return message.channel.send("You need to be in a voice channel to play music!");
@@ -47,23 +48,32 @@ module.exports.run = async (bot,message,args) => {
             return message.channel.send(`**${song.title}** has been added to the queue!`);
         }
         return;
-    } else if (args[0] === "stop") { //Stop command
+    //Stop
+    } else if (args[0] === "stop") {
         if (!message.member.voiceChannel) return message.channel.send("You're not in a voice channel!");
         if (!serverQueue) return message.channel.send("Nothing is playing...");
         message.channel.send("*Alright, I'll just wait until you say go...*");
         queue.delete(message.guild.id);
         serverQueue.connection.dispatcher.end();
         return;
-    } else if (args[0] === "skip") { //Skip command
+    //Skip
+    } else if (args[0] === "skip") {
         if (!message.member.voiceChannel) return message.channel.send("You're not in a voice channel!");
         if (!serverQueue) return message.channel.send("Nothing is playing...");
         message.channel.send("*But I never got to fin-*");
         serverQueue.connection.dispatcher.end();
         return;
+    //Info
+    } else if (args[0] === "info") {
+        if (!serverQueue) return message.channel.send("Nothing is playing...");
+        return message.channel.send(`Playing: **${serverQueue.songs[0].title}**`);
+    //Help
     } else {
         const embed = new Discord.RichEmbed()
             .setTitle = "Music Help"
-            .setDescription = "play, skip, stop"
+            .setDescription = "play, skip, stop, info";
+        message.send({embed: embed});
+        return;
     }
 }
 
