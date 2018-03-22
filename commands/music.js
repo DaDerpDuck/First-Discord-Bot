@@ -53,7 +53,7 @@ module.exports.run = async (bot,message,args) => {
         if (!message.member.voiceChannel) return message.channel.send("You're not in a voice channel!");
         if (!serverQueue) return message.channel.send("Nothing is playing...");
         message.channel.send("*Alright, I'll just wait until you say go...*");
-        queue.delete(message.guild.id);
+        serverQueue.songs = [];
         serverQueue.connection.dispatcher.end();
         return;
     //Pause
