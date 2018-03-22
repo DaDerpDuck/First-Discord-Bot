@@ -97,9 +97,9 @@ module.exports.run = async (bot,message,args) => {
         return message.channel.send("Nothing is playing")
     //Repeat
     } else if (args[0] === "repeat") {
-        if serverQueue.repeat === false {
+        if (serverQueue.repeat === false) {
             serverQueue = true
-        } else if serverQueue === true {
+        } else if (serverQueue === true) {
             serverQueue = false
         }
         message.channel.send(`Repeat is now on: **${serverQueue.repeat}**`)
