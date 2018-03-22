@@ -6,33 +6,36 @@ const queue = new Map();
 const youtube = new YouTube(process.env.googleapikey)
 
 module.exports.run = async (bot,message,args) => {
-    const url = args[1].replace(/<(.+)>/g, "$1");
     const serverQueue = queue.get(message.guild.id);
     //Play
     if (args[0] === "play") {
         //Checks permissions
+        if (!args[1]) return message.channel.send("Enter the music link!")
         const voiceChannel = message.member.voiceChannel;
         if (!voiceChannel) return message.channel.send("You need to be in a voice channel to play music!");
         const permissions = voiceChannel.permissionsFor(message.client.user);
         if (!permissions.has("CONNECT")) return message.channel.send("I cannot connect; missing connect permissions");
         if (!permissions.has("SPEAK")) return message.channel.send("I cannot speak; missing speak permissions");
+
+        const searchString = args.slice(1).join(" ");
+        const url = args[1].replace(/<(.+)>/g, "$1");
         
         //Generates information about song
         try {
             var video = await youtube.getVideo(url);
-        } catch (err) {
+        } catch (error) {
             try {
-                var videos = await youtube.searchVideos(url, 1);
+                var videos = await youtube.searchVideos(searchString, 1);
                 var video = await youtube.getVideoByID(videos[0].id);
-            } catch (e) {
-                return message.channel.send("Couldn't find any videos by that name!")
+            } catch (err) {
+                return message.channel.send("Couldn't find any videos by that name!");
             }
         }
-        console.log(video);
-        const songInfo = await ytdl.getInfo(args[1]);
+
         const song = {
-            title: Discord.escapeMarkdown(songInfo.title),
-            url: songInfo.video_url
+            id: video.id,
+            title: video.title,
+            url: `https://www.youtube.com/watch?v=${video.id}`
         }
         
         if (!serverQueue) {
