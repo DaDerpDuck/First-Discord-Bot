@@ -97,12 +97,12 @@ module.exports.run = async (bot,message,args) => {
         return message.channel.send("Nothing is playing")
     //Repeat
     } else if (args[0] === "repeat") {
-        if (serverQueue.repeat === false) {
-            serverQueue = true
-        } else if (serverQueue === true) {
-            serverQueue = false
+        if (serverQueue.repeating === false) {
+            serverQueue.repeating = true
+        } else if (serverQueue.repeating === true) {
+            serverQueue.repeating = false
         }
-        message.channel.send(`Repeat is now on: **${serverQueue.repeat}**`)
+        message.channel.send(`Repeat is now on: **${serverQueue.repeating}**`)
     //Skip
     } else if (args[0] === "skip") {
         if (!message.member.voiceChannel) return message.channel.send("You're not in a voice channel!");
