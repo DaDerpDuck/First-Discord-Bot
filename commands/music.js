@@ -16,7 +16,7 @@ module.exports.run = async (bot,message,args) => {
         //Generates information about song
         const songInfo = await ytdl.getInfo(args[1]);
         const song = {
-            title: songInfo.title,
+            title: Discord.escapeMarkdown(songInfo.title),
             url: songInfo.video_url
         }
         
