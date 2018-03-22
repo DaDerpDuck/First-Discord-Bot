@@ -1,8 +1,12 @@
-const Discord = module.require("discord.js")
-const ytdl = module.require("ytdl-core")
+const Discord = module.require("discord.js");
+const YouTube = module.require("simple-youtube-api");
+const ytdl = module.require("ytdl-core");
 const queue = new Map();
 
+const youtube = new YouTube(process.env.googleapikey)
+
 module.exports.run = async (bot,message,args) => {
+    const url = args[1].replace(/<.+>/g, "$1");
     const serverQueue = queue.get(message.guild.id);
     //Play
     if (args[0] === "play") {
@@ -14,6 +18,17 @@ module.exports.run = async (bot,message,args) => {
         if (!permissions.has("SPEAK")) return message.channel.send("I cannot speak; missing speak permissions");
         
         //Generates information about song
+        try {
+            var video = await youtube.getVideo(url);
+        } catch (err) {
+            try {
+                var videos = await youtube.searchVideos(url, 1);
+                var video = await youtube.getVideoByID(videos[0].id);
+            } catch (e) {
+                return message.channel.send("Couldn't find any videos by that name!")
+            }
+        }
+        console.log(video);
         const songInfo = await ytdl.getInfo(args[1]);
         const song = {
             title: Discord.escapeMarkdown(songInfo.title),
