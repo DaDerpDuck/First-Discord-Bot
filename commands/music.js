@@ -70,7 +70,7 @@ module.exports.run = async (bot,message,args) => {
     } else if (args[0] === "stop") {
         if (!message.member.voiceChannel) return message.channel.send("You're not in a voice channel!");
         if (!serverQueue) return message.channel.send("Nothing is playing...");
-        message.channel.send("*Alright, I'll just wait until you say go...*");
+        message.channel.send("*I see how it is...*");
         serverQueue.songs = [];
         serverQueue.connection.dispatcher.end();
         return;
