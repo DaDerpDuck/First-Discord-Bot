@@ -63,6 +63,12 @@ module.exports.run = async (bot,message,args) => {
         message.channel.send("*But I never got to fin-*");
         serverQueue.connection.dispatcher.end();
         return;
+    //Volume
+    } else if (args[0] === "volume") {
+        if (!serverQueue) return message.channel.send("Nothing is playing...");
+        if (!args[1]) return message.channel.send(`Volume is at **${serverQueue.volume}**`);
+        serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1]/5);
+        return;
     //Info
     } else if (args[0] === "info") {
         if (!serverQueue) return message.channel.send("Nothing is playing...");
@@ -70,8 +76,9 @@ module.exports.run = async (bot,message,args) => {
     //Help
     } else {
         const embed = new Discord.RichEmbed()
-            .setTitle = "Music Help"
-            .setDescription = "play, skip, stop, info";
+            .setAuthor = "Music Help"
+            .setDescription = "play, skip, stop, info"
+            .setColor = "9B59B6";
         message.channel.send({embed: embed});
         return;
     }
