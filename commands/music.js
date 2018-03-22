@@ -96,7 +96,7 @@ module.exports.run = async (bot,message,args) => {
         if (!serverQueue) return message.channel.send("Nothing is playing...");
         return message.channel.send(`
             __**Song queue:**__\n
-            ${serverQueue.songs.map(song => `**-** ${song.title}`)}
+            ${serverQueue.songs.map(song => `**-** ${song.title}`).join("\n")}
             **Playing:** ${serverQueue.songs[0].title}
         `);
     //Info
