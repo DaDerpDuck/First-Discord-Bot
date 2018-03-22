@@ -46,7 +46,8 @@ module.exports.run = async (bot,message,args) => {
                 connection: null,
                 songs: [],
                 volume: 5,
-                playing: true
+                playing: true,
+                repeating: false
             };
             //Creates a new map entry that can be referenced with the guild id
             queue.set(message.guild.id, queueConstruct);
@@ -94,6 +95,14 @@ module.exports.run = async (bot,message,args) => {
             return message.channel.send("Song has been unpaused");
         }
         return message.channel.send("Nothing is playing")
+    //Repeat
+    } else if (args[0] === "repeat") {
+        if serverQueue.repeat === false {
+            serverQueue = true
+        } else if serverQueue === true {
+            serverQueue = false
+        }
+        message.channel.send(`Repeat is now on: **${serverQueue.repeat}**`)
     //Skip
     } else if (args[0] === "skip") {
         if (!message.member.voiceChannel) return message.channel.send("You're not in a voice channel!");
@@ -146,7 +155,9 @@ function play(guild, song) {
     //Plays song in queue, shifts it, plays again recursively
     const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
         .on ("end", () => {
-            serverQueue.songs.shift();
+            if (!serverQueue.repeating) {
+                serverQueue.songs.shift();
+            }
             play(guild, serverQueue.songs[0]);
         })
         .on ("error", error => console.log(error));
