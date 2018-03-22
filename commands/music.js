@@ -16,7 +16,7 @@ module.exports.run = async (bot,message,args) => {
         //Generates information about song
         const songInfo = await ytdl.getInfo(args[1]);
         const song = {
-            title: songInfo.title,
+            title: Util.escapeMarkdown(songInfo.title),
             url: songInfo.video_url
         }
         
@@ -56,6 +56,26 @@ module.exports.run = async (bot,message,args) => {
         queue.delete(message.guild.id);
         serverQueue.connection.dispatcher.end();
         return;
+    //Pause
+    } else if (args[0] === "pause") {
+        if (!message.member.voiceChannel) return message.channel.send("You're not in a voice channel!");
+        if (serverQueue && serverQueue.playing) {
+            message.channel.send("*Alright, I'll just wait until you say go!*");
+            serverQueue.playing = false;
+            serverQueue.connection.dispatcher.pause();
+            return message.channel.send("Song has been paused");
+        }
+        return message.channel.send("Nothing is playing")
+    //Unpause
+    } else if (args[0] === "unpause") {
+        if (!message.member.voiceChannel) return message.channel.send("You're not in a voice channel!");
+        if (serverQueue && !serverQueue.playing) {
+            message.channel.send("*Freedom!*");
+            serverQueue.playing = true;
+            serverQueue.connection.dispatcher.return();
+            return message.channel.send("Song has been unpaused");
+        }
+        return message.channel.send("Nothing is playing")
     //Skip
     } else if (args[0] === "skip") {
         if (!message.member.voiceChannel) return message.channel.send("You're not in a voice channel!");
@@ -65,12 +85,20 @@ module.exports.run = async (bot,message,args) => {
         return;
     //Volume
     } else if (args[0] === "volume") {
+        if (!message.member.voiceChannel) return message.channel.send("You're not in a voice channel!");
         if (!serverQueue) return message.channel.send("Nothing is playing...");
-        if (!args[1]) return message.channel.send(`Volume is at **${serverQueue.volume}**`);
+        if (!args[1]) return message.channel.send(`Volume is at: **${serverQueue.volume}**`);
         if (!Number(args[1])) return message.channel.send("Please enter a valid number");
         serverQueue.volume = args[1];
         serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1]/5);
         return message.channel.send(`Set the volume to **${args[1]}**`);
+    } else if (args[0] === "queue") {
+        if (!serverQueue) return message.channel.send("Nothing is playing...");
+        return message.channel.send(`
+            __**Song queue:**__\n
+            ${serverQueue.songs.map(song => `**-** ${song.title}`)}
+            **Playing:** ${serverQueue.songs[0].title}
+        `);
     //Info
     } else if (args[0] === "info") {
         if (!serverQueue) return message.channel.send("Nothing is playing...");
@@ -79,7 +107,7 @@ module.exports.run = async (bot,message,args) => {
     } else {
         const embed = new Discord.RichEmbed()
             .setAuthor("Music Help")
-            .setDescription("play, skip, stop, volume, info")
+            .setDescription("play, skip, stop, pause, unpause, volume, queue, info")
             .setColor("9B59B6");
         message.channel.send({embed: embed});
         return;
