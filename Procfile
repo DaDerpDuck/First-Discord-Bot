@@ -1,1 +1,1 @@
-worker: node --harmony index.js
+worker: node index.js
