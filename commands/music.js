@@ -35,7 +35,7 @@ module.exports.run = async (bot,message,args) => {
         const song = {
             id: video.id,
             title: video.title,
-            url: `https://www.youtube.com/watch?v=${video.id}`
+            url: `https://www.youtube.com/embed/${video.id}?vq=small`
         }
         
         if (!serverQueue) {
@@ -114,6 +114,7 @@ module.exports.run = async (bot,message,args) => {
         if (!serverQueue) return message.channel.send("Nothing is playing...");
         if (!args[1]) return message.channel.send(`Volume is at: **${serverQueue.volume}**`);
         if (!Number(args[1])) return message.channel.send("Please enter a valid number");
+        if (args[1] < 0) return message.channel.send("Enter a positive number!");
         serverQueue.volume = args[1];
         serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1]/5);
         return message.channel.send(`Set the volume to **${args[1]}**`);
