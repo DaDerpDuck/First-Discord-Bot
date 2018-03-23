@@ -15,8 +15,8 @@ object.keys(helplist).forEach(function(key) {
         subcmd.push(`\`${val[k]}\``)
     });
     let template = {
-        title: `**${key}**`,
-        field: subcmd.join(", ")
+        name: `**${key}**`,
+        value: subcmd.join(", ")
       }
     cmds.push(template)
 });
