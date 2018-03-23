@@ -73,6 +73,7 @@ module.exports.run = async (bot,message,args) => {
         if (!serverQueue) return message.channel.send("Nothing is playing...");
         message.channel.send("*I see how it is...*");
         serverQueue.songs = [];
+        serverQueue.repeating = false;
         serverQueue.connection.dispatcher.end();
         return;
     //Pause
@@ -94,20 +95,17 @@ module.exports.run = async (bot,message,args) => {
             serverQueue.connection.dispatcher.return();
             return message.channel.send("Song has been unpaused");
         }
-        return message.channel.send("Nothing is playing")
+        return message.channel.send("Nothing is playing");
     //Repeat
     } else if (args[0] === "repeat") {
-        if (serverQueue.repeating === false) {
-            serverQueue.repeating = true
-        } else if (serverQueue.repeating === true) {
-            serverQueue.repeating = false
-        }
-        message.channel.send(`Repeat is now on: **${serverQueue.repeating}**`)
+        serverQueue.repeating = !serverQueue.repeating;
+        message.channel.send(`Repeat is now on: **${serverQueue.repeating}**`);
     //Skip
     } else if (args[0] === "skip") {
         if (!message.member.voiceChannel) return message.channel.send("You're not in a voice channel!");
         if (!serverQueue) return message.channel.send("Nothing is playing...");
         message.channel.send("*But I never got to fin-*");
+        serverQueue.repeating = false;
         serverQueue.connection.dispatcher.end();
         return;
     //Volume
