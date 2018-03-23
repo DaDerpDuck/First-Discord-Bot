@@ -23,10 +23,6 @@ module.exports.run = async (bot,message,args) => {
             value:subcom
         });
     }
-    let embed = new Discord.RichEmbed()
-        .setAuthor("Available Commands")
-        .setDescription(cmds)
-        .setColor("#9B59B6");
     message.channel.send({embed: {
         title:"Available Commands",
         description:"Now THIS is de wey!",
