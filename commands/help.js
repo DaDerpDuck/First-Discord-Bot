@@ -9,13 +9,13 @@ const helplist = {
 
 module.exports.run = async (bot,message,args) => {
     let cmds = [];
-    for (let key in helplist) {
+    for (let k in helplist) {
         let subcom = "";
-        helplist[key].forEach((v,i) => {
+        helplist[k].forEach((v,i) => {
             if (i < v.length-1) {
-                subcom += `\`${helplist[key][i]}\`, `;
+                subcom += `\`${helplist[k][i]}\`, `;
             } else {
-                subcom += `\`${helplist[key][i]}\``;
+                subcom += `\`${helplist[k][i]}\``;
             }
         });
         cmds.push(cmds, {
