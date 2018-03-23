@@ -14,7 +14,8 @@
     "opusscript": "0.0.6",
     "simple-youtube-api": "^5.0.1",
     "weather-js": "^2.0.0",
-    "ytdl-core": "^0.20.2"
+    "ytdl-core": "^0.20.2",
+    "mysql": ""
   },
   "devDependencies": {},
   "scripts": {
