@@ -1,5 +1,4 @@
 const Discord = module.require("discord.js");
-const object = new Object();
 const helplist = {
     "Generic":["avatar","userinfo","ping","say","weather"],
     "Random":["coinflip","dieroll","diceroll","randnum"],
@@ -8,7 +7,7 @@ const helplist = {
 }
 
 var cmds = [];
-object.keys(helplist).forEach(function(key) {
+Object.keys(helplist).forEach(function(key) {
     let val = helplist[key];
     let subcmd = [];
     val.forEach(function(v,k) {
