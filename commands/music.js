@@ -118,11 +118,12 @@ module.exports.run = async (bot,message,args) => {
         serverQueue.volume = args[1];
         serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1]/5);
         return message.channel.send(`Set the volume to **${args[1]}**`);
+    //Queue
     } else if (args[0] === "queue") {
         if (!serverQueue) return message.channel.send("Nothing is playing...");
         return message.channel.send(`
             __**Song queue:**__\n
-            ${serverQueue.songs.map(song => `**-** ${song.title}`).join("\n")}
+            ${serverQueue.songs.map(song => `**${serverQueue.songs.indexOf(song)}.** ${song.title}`).join("\n")}
             **Playing:** ${serverQueue.songs[0].title}
         `);
     //Info
