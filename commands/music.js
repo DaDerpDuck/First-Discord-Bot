@@ -20,7 +20,7 @@ module.exports.run = async (bot,message,args) => {
         const searchString = args.slice(1).join(" ");
         const url = args[1].replace(/<(.+)>/g, "$1");
 
-        if (url.match(/^https:?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)&/)) {
+        if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
             const playlist = await youtube.getPlaylist(url);
             const videos = await playlist.getVideos();
             message.channel.send(`Playlist: **${playlist.title}** has been added to the queue!`);
