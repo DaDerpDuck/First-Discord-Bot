@@ -102,10 +102,10 @@ module.exports.run = async (bot,message,args) => {
         });
         if (serverQueue.songs.length > 10) queueList.push(`*(${serverQueue.songs.length} more songs)*`)
         const embed = new Discord.RichEmbed()
-            .setAuthor("__**Song Queue:**__")
+            .setAuthor("Song Queue:")
             .setDescription(queueList.join("\n"))
             .setColor("9B59B6")
-            .setFooter(`**Playing:** ${serverQueue.songs[0].title}`);
+            .setFooter(`Playing: ${serverQueue.songs[0].title}`);
         return message.channel.send({embed: embed});
     //Info
     } else if (args[0] === "info") {
