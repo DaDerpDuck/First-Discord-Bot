@@ -24,7 +24,7 @@ module.exports.run = async (bot,message,args) => {
             const playlist = await youtube.getPlaylist(url);
             const videos = await playlist.getVideos();
             message.channel.send(`Playlist: **${playlist.title}** has been added to the queue!`);
-            for (const video of Object.valies(videos)) {
+            for (const video of Object.values(videos)) {
                 const video2 = await youtube.getVideoByID(video.id);
                 await handleVideo(video2,message,voiceChannel, true);
             }
