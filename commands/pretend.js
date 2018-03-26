@@ -1,6 +1,6 @@
 module.exports.run = async (bot,message,args) => {
     const target = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]) || message.guild.member(message.author);
-    if (!target.bot) return message.channel.send("Sorry, this command only works on bots!");
+    if (!target.user.bot) return message.channel.send("Sorry, this command only works on bots!");
     message.delete();
     hook(message.channel,target.user.username,args.shift().join(" "), target.user.displayAvatarURL);
     return;
@@ -38,6 +38,7 @@ function hook(channel,title,message,avatar) {
                     });
             }
         });
+    return;
 }
 
 module.exports.help = {
