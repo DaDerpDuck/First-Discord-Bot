@@ -1,6 +1,6 @@
 module.exports.run = async (bot,message,args) => {
     const target = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]) || message.guild.member(message.author);
-    const msg = (args.shift()).join(" ");
+    const msg = args.splice(0,1).join(" ");
     if (!target.user.bot) return message.channel.send("Sorry, this command only works on bots!");
     if (!msg) return message.channel.send("Specify a message to send");
     message.delete();
