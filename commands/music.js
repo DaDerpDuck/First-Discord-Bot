@@ -19,54 +19,29 @@ module.exports.run = async (bot,message,args) => {
 
         const searchString = args.slice(1).join(" ");
         const url = args[1].replace(/<(.+)>/g, "$1");
-        
-        //Generates information about song
-        try {
-            var video = await youtube.getVideo(url);
-        } catch (error) {
-            try {
-                var videos = await youtube.searchVideos(searchString, 1);
-                var video = await youtube.getVideoByID(videos[0].id);
-            } catch (err) {
-                return message.channel.send("Couldn't find any videos by that name!");
-            }
-        }
 
-        const song = {
-            id: video.id,
-            title: video.title,
-            url: `https://www.youtube.com/embed/${video.id}?vq=small`
-        }
-        
-        if (!serverQueue) {
-            //Creates array for queue
-            const queueConstruct = {
-                textChannel: message.channel,
-                voiceChannel: voiceChannel,
-                connection: null,
-                songs: [],
-                volume: 5,
-                playing: true,
-                repeating: false
-            };
-            //Creates a new map entry that can be referenced with the guild id
-            queue.set(message.guild.id, queueConstruct);
-            queueConstruct.songs.push(song);
-
-            try {
-                var connection = await voiceChannel.join();
-                queueConstruct.connection = connection;
-                play(message.guild, queueConstruct.songs[0], message);
-            } catch (e) {
-                console.log(e.stack);
-                queue.delete(message.guild.id);
-                return message.channel.send(e);
+        if (url.match(/^https:?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)&/)) {
+            const playlist = await youtube.getPlaylist(url);
+            const videos = await playlist.getVideos();
+            message.channel.send(`Playlist: **${playlist.title}** has been added to the queue!`);
+            for (const video of Object.valies(videos)) {
+                const video2 = await youtube.getVideoByID(video.id);
+                await handleVideo(video2,message,voiceChannel, true);
             }
         } else {
-            serverQueue.songs.push(song);
-            return message.channel.send(`**${song.title}** has been added to the queue!`);
+            //Generates information about song
+            try {
+                var video = await youtube.getVideo(url);
+            } catch (error) {
+                try {
+                    var videos = await youtube.searchVideos(searchString, 1);
+                    var video = await youtube.getVideoByID(videos[0].id);
+                } catch (err) {
+                    return message.channel.send("Couldn't find any videos by that name!");
+                }
+            }
+            return handleVideo(video,message,voiceChannel)
         }
-        return;
     //Stop
     } else if (args[0] === "stop") {
         if (!message.member.voiceChannel) return message.channel.send("You're not in a voice channel!");
@@ -123,7 +98,7 @@ module.exports.run = async (bot,message,args) => {
         if (!serverQueue) return message.channel.send("Nothing is playing...");
         return message.channel.send(`
             __**Song queue:**__\n
-            ${serverQueue.songs.map(song => `**${serverQueue.songs.indexOf(song)}.** ${song.title}`).join("\n")}
+            ${serverQueue.songs.map(song => `**${serverQueue.songs.indexOf(song) + 1}.** ${song.title}`).join("\n")}\n
             **Playing:** ${serverQueue.songs[0].title}
         `);
     //Info
@@ -139,6 +114,46 @@ module.exports.run = async (bot,message,args) => {
         message.channel.send({embed: embed});
         return;
     }
+}
+
+async function handleVideo(video,message,voiceChannel, playlist = false) {
+    const serverQueue = queue.get(message.guild.id);
+    const song = {
+        id: video.id,
+        title: Discord.escapeMarkdown(video.title),
+        url: `https://www.youtube.com/embed/${video.id}?vq=small`
+    }
+    
+    if (!serverQueue) {
+        //Creates array for queue
+        const queueConstruct = {
+            textChannel: message.channel,
+            voiceChannel: voiceChannel,
+            connection: null,
+            songs: [],
+            volume: 5,
+            playing: true,
+            repeating: false
+        };
+        //Creates a new map entry that can be referenced with the guild id
+        queue.set(message.guild.id, queueConstruct);
+        queueConstruct.songs.push(song);
+
+        try {
+            var connection = await voiceChannel.join();
+            queueConstruct.connection = connection;
+            play(message.guild, queueConstruct.songs[0], message);
+        } catch (e) {
+            console.log(e.stack);
+            queue.delete(message.guild.id);
+            return message.channel.send(e);
+        }
+    } else {
+        serverQueue.songs.push(song);
+        if (playlist) return;
+        return message.channel.send(`**${song.title}** has been added to the queue!`);
+    }
+    return;
 }
 
 function play(guild, song) {
