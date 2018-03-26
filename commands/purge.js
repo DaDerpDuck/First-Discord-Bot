@@ -5,8 +5,7 @@ module.exports.run = async (bot,message,args) => {
     if (!args[0]) return message.channel.send("Provide amount of messages to delete");
     if (!Number(args[0])) return message.channel.send("Provide a number of messages to delete");
     let fetched = await message.channel.fetchMessages({limit: args[0]});
-    message.delete();
-    await message.channel.bulkDelete(fetched)
+    await message.channel.bulkDelete(fetched + 1)
     let embed = new Discord.RichEmbed()
         .setAuthor(`Purge Command`)
         .setDescription(`Deleted ${args[0]} messages!`)
