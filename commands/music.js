@@ -96,9 +96,14 @@ module.exports.run = async (bot,message,args) => {
     //Queue
     } else if (args[0] === "queue") {
         if (!serverQueue) return message.channel.send("Nothing is playing...");
+        const queueList = [];
+        serverQueue.songs.map(song => {
+            if ((serverQueue.songs.indexOf(song)+1)<11) queueList.push(song.title);
+        });
+        if (serverQueue.songs.length > 10) queueList.push(`... *(${serverQueue.songs.length} more songs)*`)
         return message.channel.send(`
             __**Song queue:**__\n
-            ${serverQueue.songs.map(song => `**${serverQueue.songs.indexOf(song) + 1}.** ${song.title}`).join("\n")}\n
+            ${queueList.join("\n")}\n
             **Playing:** ${serverQueue.songs[0].title}
         `);
     //Info
