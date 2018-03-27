@@ -1,18 +1,11 @@
 const Discord = require("discord.js");
 const botSettings = require("./botsettings.json");
-const mysql = require("mysql");
+const db = require("quick.db");
 const fs = require("fs");
 const bot = new Discord.Client({disableEveryone: true});
 const prefix = botSettings.prefix;
 bot.commands = new Discord.Collection();
 bot.mutes = require("./mutes.json");
-
-const connection = mysql.createConnection({
-    host: "us-cdbr-iron-east-05.cleardb.net",
-    user: process.env.sqluser,
-    password: process.env.sqlpass,
-    database: process.env.sqldatabase
-});
 
 //Reads from each command file
 fs.readdir("./commands/",(err,files) => {
