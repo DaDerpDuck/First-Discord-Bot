@@ -100,8 +100,8 @@ module.exports.run = async (bot,message,args) => {
         serverQueue.songs.map(song => {
             if ((serverQueue.songs.indexOf(song)+1)<11) queueList.push(`**${serverQueue.songs.indexOf(song)+1}.** ${song.title}`);
         });
+        if (serverQueue.songs.length > 10) queueList.push(`*(${serverQueue.songs.length} more songs)*`);
         queueList = queueList.join("\n");
-        if (serverQueue.songs.length > 10) queueList.push(`*(${serverQueue.songs.length} more songs)*`)
         return message.channel.send(`
             __**Song Queue:**__\n
             ${queueList.trim()}\n
