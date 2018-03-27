@@ -46,7 +46,7 @@ bot.on("ready", async() => {
             }
         }
     }, 5000);
-    bot.user.setActivity(">help")
+    bot.user.setActivity("on a brick")
     try {
         let link = await bot.generateInvite(["ADMINISTRATOR"]);
         console.log(link);
