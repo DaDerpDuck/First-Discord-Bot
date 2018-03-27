@@ -1,3 +1,4 @@
+const db = module.require("quick.db");
 const fs = module.require("fs");
 const timeTable = {
     "s": [1000,"seconds"],
@@ -51,6 +52,8 @@ module.exports.run = async (bot,message,args) => {
             guild: message.guild.id,
             time: Date.now() + parseInt(args[1]) * timeTable[timeAmount][0]
         }
+        //Testing
+        
         //Writes to json file with when mutee can be unmuted
         fs.writeFile("./mutes.json", JSON.stringify(bot.mutes, null, 4), err =>{
             if (err) throw err;
