@@ -101,12 +101,11 @@ module.exports.run = async (bot,message,args) => {
             if ((serverQueue.songs.indexOf(song)+1)<11) queueList.push(`**${serverQueue.songs.indexOf(song)+1}.** ${song.title}`);
         });
         if (serverQueue.songs.length > 10) queueList.push(`*(${serverQueue.songs.length} more songs)*`)
-        const embed = new Discord.RichEmbed()
-            .setAuthor("Song Queue:")
-            .setDescription(queueList.join("\n"))
-            .setColor("9B59B6")
-            .setFooter(`Playing: ${serverQueue.songs[0].title}`);
-        return message.channel.send({embed: embed});
+        return message.channel.send(`
+            __**Song Queue:**__\n
+            ${queueList.join("\n").trim()}\n
+            **Playing: ** ${serverQueue.songs[0].title}
+        `);
     //Info
     } else if (args[0] === "info") {
         if (!serverQueue) return message.channel.send("Nothing is playing...");
