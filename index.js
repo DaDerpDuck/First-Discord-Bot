@@ -27,6 +27,7 @@ fs.readdir("./commands/",(err,files) => {
 bot.on("ready", async() => {
     console.log(`Bot is ready! ${bot.user.username}`);
     bot.setInterval(() => {
+        const mutes = db.fetch("mutes");
         //Unmutes when time is up
         for(let i in bot.mutes) {
             let time = bot.mutes[i].time;
@@ -44,6 +45,27 @@ bot.on("ready", async() => {
                     if (err) throw err;
                 });
             }
+            
+            //Test
+            let newArray = [];
+
+            time = mutes.map(function(e) {if (Date.now() >= e.time) return removeArray(e.user,e.guild)});
+
+            function removeArray(userId,userGuild) {
+              pos = mutes.map(function(e) {return [e.user,e.guild];}).reduce(function(a, e, i) {
+                  if (e[0] === userId && e[1] === userGuild) {
+                    a.push(i);
+                    delete mutes[a];
+                  }
+                  return a;
+              }, []);
+            }
+            for (var h = 0; h < mutes.length; h++) {
+              if (mutes[h]) {
+                newArray.push(mutes[h]);
+              }
+            }
+            db.set("mutes",newArray);
         }
     }, 5000);
     bot.user.setActivity("on a brick")
