@@ -66,6 +66,7 @@ bot.on("ready", async() => {
               }
             }
             db.set("mutes",newArray);
+            console.log(mutes);
         }
     }, 5000);
     bot.user.setActivity("on a brick")
