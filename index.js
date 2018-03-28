@@ -27,7 +27,11 @@ fs.readdir("./commands/",(err,files) => {
 bot.on("ready", async() => {
     console.log(`Bot is ready! ${bot.user.username}`);
     bot.setInterval(() => {
-        const mutes = db.fetch("mutes");
+        const fetch = db.fetch("mutes");
+        let mutes = [];
+        for (var i = 0; i < fetch.length; i++) {
+            mutes.push(fetch[i]);
+        }
         //Unmutes when time is up
         for(let i in bot.mutes) {
             let time = bot.mutes[i].time;
