@@ -53,17 +53,8 @@ module.exports.run = async (bot,message,args) => {
             time: Date.now() + parseInt(args[1]) * timeTable[timeAmount][0]
         }
         
-        // const db = require("quick.db");
-
-        // db.set("guild_1",{"mutes":[]});
-
-        // db.push("guild_1",{"userId":1,"time":5},{target:".mutes"}).then(i => {
-        //     console.log(i.mutes)
-        // });
-
-        // db.push("guild_1",{"userId":2,"time":55},{target:".mutes"}).then(i => {
-        //     console.log(i.mutes)
-        // });
+        db.set("mutes",[]);
+        db.push("mutes",{"userId":mutee.id,"guildId":message.guild.id,"time":Date.now()+parseInt(args[1])*timeTable[timeAmount][0]});
 
         //Writes to json file with when mutee can be unmuted
         fs.writeFile("./mutes.json", JSON.stringify(bot.mutes, null, 4), err =>{
