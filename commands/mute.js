@@ -53,26 +53,6 @@ module.exports.run = async (bot,message,args) => {
             time: Date.now() + parseInt(args[1]) * timeTable[timeAmount][0]
         }
         
-        //Test
-        /*
-        {
-            "guild1": {
-                "user_1":time
-            },
-            "guild2": {
-                "user_2":time
-            }
-        }
-        */
-        let mutes = {};
-        db.fetch("mutes").then(i => {
-            for (x in i) {
-                mutes[x] = i[x];
-            }
-        });
-        mutes[message.guild.id][mutee.id] = Date.now() + parseInt(args[1]) * timeTable[timeAmount][0];
-        db.set("mutes",mutes);
-        
         //Writes to json file with when mutee can be unmuted
         fs.writeFile("./mutes.json", JSON.stringify(bot.mutes, null, 4), err =>{
             if (err) throw err;
