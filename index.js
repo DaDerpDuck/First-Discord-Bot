@@ -60,6 +60,7 @@ bot.on("ready", async() => {
                }
             }
             db.set("mutes",muteTable)
+            console.log(muteTable);
         }
     }, 5000);
     bot.user.setActivity("on a brick")
