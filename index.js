@@ -44,23 +44,6 @@ bot.on("ready", async() => {
                     if (err) throw err;
                 });
             }
-            
-            //Test
-            let muteTable = {}
-            db.fetch("mutes").then(i => {
-                for (let x in i) {
-                    muteTable[x] = i[x]
-                }
-            });
-            for (let x in muteTable) {
-               for (let b in muteTable[x]) {
-                   if (Date.now() >= muteTable[x][b]) {
-                       delete muteTable[x][b];
-                   }
-               }
-            }
-            db.set("mutes",muteTable)
-            console.log(muteTable);
         }
     }, 5000);
     bot.user.setActivity("on a brick")
