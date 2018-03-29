@@ -1,4 +1,3 @@
-const db = module.require("quick.db");
 const fs = module.require("fs");
 const timeTable = {
     "s": [1000,"seconds"],
