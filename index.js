@@ -47,6 +47,14 @@ bot.on("ready", async() => {
                 });
             }
             
+            
+            /*
+            {
+                "user1_guild1":time,
+                "user2_guild2":time
+            }
+            */
+            
             //Test
             /*
             let newArray = [];
