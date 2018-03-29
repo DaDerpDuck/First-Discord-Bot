@@ -28,11 +28,7 @@ bot.on("ready", async() => {
     console.log(`Bot is ready! ${bot.user.username}`);
     bot.setInterval(() => {
         let mutes = [];
-        const fetch = db.fetch("mutes").then(i => {
-            for (var x = 0; x < i.length; x++) {
-                mutes.push(fetch[i]);
-           }
-        });
+        const fetch = db.fetch("mutes").then(i => mutes.push(fetch[i])});
         //Unmutes when time is up
         for(let i in bot.mutes) {
             let time = bot.mutes[i].time;
@@ -52,6 +48,7 @@ bot.on("ready", async() => {
             }
             
             //Test
+            /*
             let newArray = [];
 
             time = mutes.map(function(e) {if (Date.now() >= e.time) return removeArray(e.user,e.guild)});
@@ -72,6 +69,7 @@ bot.on("ready", async() => {
             }
             db.set("mutes",newArray);
             console.log(mutes);
+            */
         }
     }, 5000);
     bot.user.setActivity("on a brick")
