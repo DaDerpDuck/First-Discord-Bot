@@ -27,8 +27,6 @@ fs.readdir("./commands/",(err,files) => {
 bot.on("ready", async() => {
     console.log(`Bot is ready! ${bot.user.username}`);
     bot.setInterval(() => {
-        let mutes = [];
-        const fetch = db.fetch("mutes").then(i => mutes.push(fetch[i])});
         //Unmutes when time is up
         for(let i in bot.mutes) {
             let time = bot.mutes[i].time;
@@ -47,37 +45,21 @@ bot.on("ready", async() => {
                 });
             }
             
-            
-            /*
-            {
-                "user1_guild1":time,
-                "user2_guild2":time
-            }
-            */
-            
             //Test
-            /*
-            let newArray = [];
-
-            time = mutes.map(function(e) {if (Date.now() >= e.time) return removeArray(e.user,e.guild)});
-
-            function removeArray(userId,userGuild) {
-              pos = mutes.map(function(e) {return [e.user,e.guild];}).reduce(function(a, e, i) {
-                  if (e[0] === userId && e[1] === userGuild) {
-                    a.push(i);
-                    delete mutes[a];
-                  }
-                  return a;
-              }, []);
+            let muteTable = {}
+            db.fetch("mutes").then(i => {
+                for (let x in i) {
+                    muteTable[x] = i[x]
+                }
+            });
+            for (let x in muteTable) {
+               for (let b in muteTable[x]) {
+                   if (Date.now() >= muteTable[x][b]) {
+                       delete muteTable[x][b];
+                   }
+               }
             }
-            for (var h = 0; h < mutes.length; h++) {
-              if (mutes[h]) {
-                newArray.push(mutes[h]);
-              }
-            }
-            db.set("mutes",newArray);
-            console.log(mutes);
-            */
+            db.set("mutes",muteTable)
         }
     }, 5000);
     bot.user.setActivity("on a brick")
