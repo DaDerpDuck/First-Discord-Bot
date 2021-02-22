@@ -1,1 +1,2 @@
-# 1-T-6789
+My first discord bot, following a YouTube tutorial
+Now archived
